@@ -15,7 +15,7 @@ import 'package:pockergui1/src/migration/logic/player.dart';
 /// ```
 abstract class Street<T> {
   /// Тип-имя улицы (flop, turn, etc).
-  T type;
+  final T type;
 
   /// Конструктор по умолчанию.
   ///
