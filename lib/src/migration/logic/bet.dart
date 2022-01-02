@@ -9,7 +9,7 @@ class Bet {
 
   bool get folded => _folded;
 
-  Bet(this.author, this._amount, this._folded);
+  Bet(this.author, this._amount, [this._folded = false]);
 
   bool call(Bet another) => bet(another.amount);
 
