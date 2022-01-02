@@ -1,4 +1,6 @@
 class Player {
+  static bool failsAmountCheck(int amount) => amount < 0;
+
   String _name;
   int _balance;
 
@@ -24,6 +26,8 @@ class Player {
   /// Возвращает true, если списание произошло успешно
   /// или false в противном случае.
   bool charge(int amount) {
+    if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
+
     if (_balance >= amount) {
       _balance -= amount;
       return true;
@@ -34,5 +38,9 @@ class Player {
   /// Начисляет в баланс игрока указанную сумму.
   ///
   /// [amount] — сумма, подлежащая начислению.
-  void replenish(int amount) => _balance += amount;
+  void replenish(int amount) {
+    if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
+
+    _balance += amount;
+  }
 }
