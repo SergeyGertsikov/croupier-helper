@@ -2,15 +2,19 @@ class Player {
   String _name;
   int _balance;
 
+  /// Текущее имя игрока.
   String get name => _name;
 
+  /// Текущий баланс игрока.
   int get balance => _balance;
 
+  /// Конструктор по умолчанию.
   Player(
     this._name, [
     this._balance = 0,
   ]);
 
+  /// Переименовывает игрока.
   void rename(String newName) => _name = newName;
 
   /// Взымает с баланса игрока указанную сумму.
