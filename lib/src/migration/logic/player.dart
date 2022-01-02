@@ -21,10 +21,12 @@ class Player {
 
   /// Взымает с баланса игрока указанную сумму.
   ///
-  /// [amount] — сумма, подлежащая списанию.
+  /// [amount] — сумма, подлежащая списанию. Не может быть отрицательной.
   ///
   /// Возвращает true, если списание произошло успешно
   /// или false в противном случае.
+  ///
+  /// Возвращает [ArgumentError], если [amount] содержит недопустимое значение.
   bool charge(int amount) {
     if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
 
@@ -38,6 +40,8 @@ class Player {
   /// Начисляет в баланс игрока указанную сумму.
   ///
   /// [amount] — сумма, подлежащая начислению.
+  ///
+  /// Возвращает [ArgumentError], если [amount] содержит недопустимое значение.
   void replenish(int amount) {
     if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
 
