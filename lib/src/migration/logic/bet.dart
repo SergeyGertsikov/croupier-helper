@@ -12,6 +12,8 @@ class Bet {
   Bet.name(this.author, this._amount, this._folded);
 
   bool call(Bet another) {
+    if (folded) return false;
+
     int toAdd = another.amount - _amount;
     bool charged = author.charge(toAdd);
     if (charged == true) {
@@ -22,6 +24,8 @@ class Bet {
   }
 
   bool bet(int amount) {
+    if (folded) return false;
+
     int toAdd = amount - _amount;
     bool charged = author.charge(toAdd);
     if (charged == true) {
