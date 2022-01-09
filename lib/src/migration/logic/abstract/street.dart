@@ -65,13 +65,13 @@ abstract class Street<M> extends BetQueue {
   void fold();
 
   @protected
-  void streetDone(int bank);
+  void onStreetDone(int bank);
 
   @override
   void onEnd() {
     int bank = 0;
     for (Bet bet in bets) bank += bet.amount;
 
-    streetDone(bank);
+    onStreetDone(bank);
   }
 }
