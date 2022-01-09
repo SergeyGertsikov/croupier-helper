@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+import 'package:pockergui1/src/migration/logic/abstract/bet_queue.dart';
 import 'package:pockergui1/src/migration/logic/abstract/player_info.dart';
 import 'package:pockergui1/src/migration/logic/bet.dart';
 import 'package:pockergui1/src/migration/logic/player.dart';
@@ -17,7 +17,7 @@ typedef StreetFinishCallback = void Function(int bank);
 ///   ...
 /// }
 /// ```
-abstract class Street<T> {
+abstract class Street<T> extends BetQueue {
   static List<Bet> betsFromPlayers(List<Player> players) => [
         for (Player player in players) Bet(player),
       ];
@@ -27,9 +27,6 @@ abstract class Street<T> {
 
   final StreetFinishCallback onFinish;
 
-  @protected
-  final List<Bet> bets;
-
   /// Конструктор по умолчанию.
   ///
   /// <br>
@@ -38,7 +35,12 @@ abstract class Street<T> {
     required this.type,
     required this.onFinish,
     required List<Player> players,
-  }) : bets = betsFromPlayers(players);
+    required Player opener,
+  }) : super(
+          bets: betsFromPlayers(players),
+          opener: betsFromPlayers(players)
+              .firstWhere((bet) => bet.author == opener),
+        );
 
   /// Информация об игроках и ставках для отображения.
   List<PlayerRoundInfo> get roundInfo;
@@ -61,51 +63,6 @@ abstract class Street<T> {
   /// Выполняет фолд от имени текущего игрока.
   void fold();
 
-  @protected
-  void commitBet();
-}
-
-mixin TurnHelper<T> on Street<T> {
-  late final List<Player> _pending;
-
-  late final List<Player> _finished;
-
-  late Player _current;
-
-  Bet get current => bets.firstWhere((bet) => bet.author == _current);
-
-  void initTurnHelper({
-    required List<Player> players,
-    required Player starter,
-  }) {
-    assert(
-      players.contains(starter),
-      'Starter player shall participate street!',
-    );
-
-    _pending = List.of(players);
-    _pending.remove(starter);
-
-    _current = starter;
-
-    _finished = [];
-  }
-
-  void resetTurn() {
-    _pending.addAll(_finished);
-
-    _finished.clear();
-  }
-
   @override
-  void commitBet(){
-    _finished.add(_current);
-
-    Player next = nextPlayer(_pending);
-    _pending.remove(next);
-
-    _current = next;
-  }
-
-  Player nextPlayer(List<Player> pending);
+  void acceptBet();
 }
