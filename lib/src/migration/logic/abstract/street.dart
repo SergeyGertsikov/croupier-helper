@@ -11,6 +11,7 @@ abstract class StreetFactory<M> {
   Street<M> create({
     required M marker,
     required List<Player> players,
+    List<Player>? allInners,
   });
 }
 
@@ -60,6 +61,9 @@ abstract class Street<M> extends BetQueue {
   /// Возвращает [true], если ставка уравнена успешно,
   /// или [false] в противном случае.
   bool call();
+
+  /// Выполняет all-in от имени текущего игрока.
+  bool allIn();
 
   /// Выполняет фолд от имени текущего игрока.
   void fold();

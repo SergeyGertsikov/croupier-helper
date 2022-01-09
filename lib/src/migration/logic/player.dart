@@ -1,5 +1,5 @@
 class Player {
-  static bool failsAmountCheck(int amount) => amount < 0;
+  static bool _failsAmountCheck(int amount) => amount < 0;
 
   String _name;
   int _balance;
@@ -28,7 +28,7 @@ class Player {
   ///
   /// Возвращает [ArgumentError], если [amount] содержит недопустимое значение.
   bool charge(int amount) {
-    if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
+    if (_failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
 
     if (_balance >= amount) {
       _balance -= amount;
@@ -43,7 +43,7 @@ class Player {
   ///
   /// Возвращает [ArgumentError], если [amount] содержит недопустимое значение.
   void replenish(int amount) {
-    if (failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
+    if (_failsAmountCheck(amount)) throw ArgumentError('Invalid amount');
 
     _balance += amount;
   }
