@@ -59,9 +59,6 @@ abstract class Street<M> extends BetQueue {
   /// Выполняет фолд от имени текущего игрока.
   void fold();
 
-  @override
-  void acceptBet();
-
   @protected
   void streetDone(int bank);
 
