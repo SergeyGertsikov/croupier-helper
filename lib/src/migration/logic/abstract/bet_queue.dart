@@ -34,10 +34,16 @@ abstract class BetQueue {
   void acceptBet() {
     _finished.add(_current);
 
-    Bet next = nextBet(_pending);
-    _current = next;
-    _pending.remove(next);
+    Bet? next = nextBet(_pending);
+
+    if (next is Bet) {
+      _current = next;
+      _pending.remove(next);
+    } else
+      onEnd();
   }
 
-  Bet nextBet(List<Bet> pending);
+  Bet? nextBet(List<Bet> pending);
+
+  void onEnd();
 }

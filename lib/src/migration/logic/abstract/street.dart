@@ -1,13 +1,12 @@
+import 'package:meta/meta.dart';
 import 'package:pockergui1/src/migration/logic/abstract/bet_queue.dart';
 import 'package:pockergui1/src/migration/logic/abstract/player_info.dart';
 import 'package:pockergui1/src/migration/logic/bet.dart';
 import 'package:pockergui1/src/migration/logic/player.dart';
 
-typedef StreetFinishCallback = void Function(int bank);
-
 /// Этап раунда.
 ///
-/// [T] — перечисляемый тип-имя улицы.
+/// [M] — перечисляемый тип-имя улицы.
 ///
 /// Пример:
 /// ```
@@ -17,15 +16,13 @@ typedef StreetFinishCallback = void Function(int bank);
 ///   ...
 /// }
 /// ```
-abstract class Street<T> extends BetQueue {
+abstract class Street<M> extends BetQueue {
   static List<Bet> betsFromPlayers(List<Player> players) => [
         for (Player player in players) Bet(player),
       ];
 
-  /// Тип-имя улицы (flop, turn, etc).
-  final T marker;
-
-  final StreetFinishCallback onFinish;
+  /// Маркер покерной улицы (flop, turn, etc).
+  final M marker;
 
   /// Конструктор по умолчанию.
   ///
@@ -33,7 +30,6 @@ abstract class Street<T> extends BetQueue {
   /// [players] — список участников этапа.
   Street({
     required this.marker,
-    required this.onFinish,
     required List<Player> players,
     required Player opener,
   }) : super(
@@ -65,4 +61,15 @@ abstract class Street<T> extends BetQueue {
 
   @override
   void acceptBet();
+
+  @protected
+  void streetDone(int bank);
+
+  @override
+  void onEnd() {
+    int bank = 0;
+    for(Bet bet in bets) bank += bet.amount;
+
+    streetDone(bank);
+  }
 }
