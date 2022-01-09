@@ -23,7 +23,7 @@ abstract class Street<T> extends BetQueue {
       ];
 
   /// Тип-имя улицы (flop, turn, etc).
-  final T type;
+  final T marker;
 
   final StreetFinishCallback onFinish;
 
@@ -32,7 +32,7 @@ abstract class Street<T> extends BetQueue {
   /// <br>
   /// [players] — список участников этапа.
   Street({
-    required this.type,
+    required this.marker,
     required this.onFinish,
     required List<Player> players,
     required Player opener,
