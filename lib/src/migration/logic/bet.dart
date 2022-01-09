@@ -1,7 +1,7 @@
 import 'package:pockergui1/src/migration/logic/player.dart';
 
 class Bet {
-  Player author;
+  final Player author;
   int _amount;
   bool _folded;
 
