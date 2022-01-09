@@ -13,6 +13,8 @@ abstract class BetQueue {
 
   Bet get current => _current;
 
+  List<Bet> get finished => _finished.toList(growable: false);
+
   BetQueue({
     required this.bets,
     required Bet opener,
