@@ -4,6 +4,16 @@ import 'package:pockergui1/src/migration/logic/abstract/player_info.dart';
 import 'package:pockergui1/src/migration/logic/bet.dart';
 import 'package:pockergui1/src/migration/logic/player.dart';
 
+@immutable
+abstract class StreetFactory<M> {
+  const StreetFactory();
+
+  Street<M> create({
+    required M marker,
+    required List<Player> players,
+  });
+}
+
 /// Этап раунда.
 ///
 /// [M] — перечисляемый тип-имя улицы.
@@ -17,10 +27,6 @@ import 'package:pockergui1/src/migration/logic/player.dart';
 /// }
 /// ```
 abstract class Street<M> extends BetQueue {
-  static List<Bet> betsFromPlayers(List<Player> players) => [
-        for (Player player in players) Bet(player),
-      ];
-
   /// Маркер покерной улицы (flop, turn, etc).
   final M marker;
 
@@ -30,12 +36,11 @@ abstract class Street<M> extends BetQueue {
   /// [players] — список участников этапа.
   Street({
     required this.marker,
-    required List<Player> players,
-    required Player opener,
+    required List<Bet> bets,
+    required Bet opener,
   }) : super(
-          bets: betsFromPlayers(players),
-          opener: betsFromPlayers(players)
-              .firstWhere((bet) => bet.author == opener),
+          bets: bets,
+          opener: opener,
         );
 
   /// Информация об игроках и ставках для отображения.
@@ -65,7 +70,7 @@ abstract class Street<M> extends BetQueue {
   @override
   void onEnd() {
     int bank = 0;
-    for(Bet bet in bets) bank += bet.amount;
+    for (Bet bet in bets) bank += bet.amount;
 
     streetDone(bank);
   }
